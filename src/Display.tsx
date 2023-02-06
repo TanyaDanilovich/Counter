@@ -22,7 +22,6 @@ function Display({
             ? "enter value and press 'set'"
             : value
 
-    console.log("stateError.valueError", stateError.valueError)
 
     return (
         <Wrapper>

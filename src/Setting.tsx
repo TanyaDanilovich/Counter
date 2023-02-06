@@ -9,90 +9,64 @@ export type SettingPropsType = {
     setState: (newState: StateType) => void
     stateError: ErrorStateType
     setStateError: (newState: ErrorStateType) => void
+    isSettingMode: boolean
+    setIsSettingMode: (newState: boolean) => void
 }
 
 
 const Setting = (props: SettingPropsType) => {
 
-    const {state, setState, stateError, setStateError} = props
+    const {state, setState, stateError, setStateError, isSettingMode, setIsSettingMode} = props
     const [localState, setLocalState] = useState<StateType>({...state})
 
     useEffect(() => {
-
-        localState.max < 0 && setStateError({...stateError, maxError: true})
-
-        localState.min >= 0 && localState.max >= 0 && localState.min < localState.max
-            ? setStateError({...stateError, maxError: false, minError: false})
-            : setStateError({...stateError, maxError: true, minError: true})
-
-
-        localState.min + localState.addition > localState.max || localState.addition <= 0
-            ? setStateError({...stateError, additionError: true})
-            : setStateError({...stateError, additionError: false})
-
-
-    }, [localState.max])
-    useEffect(() => {
-
-        localState.min < 0 && setStateError({...stateError, minError: true})
-
-
-        localState.min >= 0 && localState.max >= 0 && localState.min < localState.max
-            ? setStateError({...stateError, maxError: false, minError: false})
-            : setStateError({...stateError, maxError: true, minError: true})
-
-
-        localState.min + localState.addition > localState.max || localState.addition <= 0
-            ? setStateError({...stateError, additionError: true})
-            : setStateError({...stateError, additionError: false})
-
-
-    }, [localState.min])
-    useEffect(() => {
-
-        localState.addition < 0 && setStateError({...stateError, additionError: true})
-
-        localState.min + localState.addition > localState.max || localState.addition <= 0
-            ? setStateError({...stateError, additionError: true})
-            : setStateError({...stateError, additionError: false})
-
-
-    }, [localState.addition])
+        console.log("state is changed")
+        localStorage.setItem('counter_State', JSON.stringify({
+            value: state.min,
+            min: state.min,
+            max: state.max,
+            addition: state.addition,
+        }));
+    }, [state])
 
 
     const setMaxValueCallback = (val: number) => {
         stateError.valueError && setStateError({...stateError, valueError: false})
-        setState({...state, isSettingChanged: true})
+        setIsSettingMode(true)
         setLocalState({...localState, max: val})
     }
 
 
     const setMinValueCallback = (val: number) => {
         stateError.valueError && setStateError({...stateError, valueError: false})
-        setState({...state, isSettingChanged: true})
+        setIsSettingMode(true)
         setLocalState({...localState, min: val})
     }
 
 
     const setAdditionalValueCallback = (val: number) => {
         stateError.valueError && setStateError({...stateError, valueError: false})
-        setState({...state, isSettingChanged: true})
+        setIsSettingMode(true)
         setLocalState({...localState, addition: val})
     }
 
 
-    const setButtonCallback = () => setState({
-        value: localState.min,
-        min: localState.min,
-        max: localState.max,
-        addition: localState.addition,
-        isSettingChanged: false
-    })
+    const setButtonCallback = () => {
+        setState({
+            value: localState.min,
+            min: localState.min,
+            max: localState.max,
+            addition: localState.addition,
+        })
+        setIsSettingMode(false)
+
+
+    }
 
     const setButtonDisabled = stateError.maxError
         || stateError.minError
-        || stateError.additionError
-        || !state.isSettingChanged
+        || stateError.additionError || !isSettingMode
+
 
     return (
 

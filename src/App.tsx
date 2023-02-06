@@ -8,7 +8,6 @@ export type StateType = {
     min: number
     max: number
     addition: number
-    isSettingChanged: boolean
 }
 
 export type ErrorStateType = {
@@ -19,13 +18,23 @@ export type ErrorStateType = {
 }
 
 function App() {
-    const [state, setState] = useState<StateType>({
+    console.log("rerender App")
+    const initState: StateType = {
         value: 0,
         addition: 1,
         min: 0,
-        max: 5,
-        isSettingChanged: false
-    })
+        max: 5
+    }
+    let newState = null
+
+    const storageStateAsString = localStorage.getItem('counter_State')
+    if (storageStateAsString !== null) {
+        newState = JSON.parse(storageStateAsString)
+    }
+
+    const [state, setState] = useState<StateType>(newState ? newState : initState)
+
+    const [isSettingMode, setIsSettingMode] = useState<boolean>(false)
 
     const [stateError, setStateError] = useState<ErrorStateType>({
         valueError: false,
@@ -35,20 +44,15 @@ function App() {
     })
 
 
-    useEffect(() => {
-
-        state.value === state.max || state.value + state.addition >= state.max
-            ? setStateError({...stateError, valueError: true})
-            : setStateError({...stateError, valueError: false})
-        
-    }, [state.value])
-
     const incStateValue = () => {
 
-        (state.value < state.max) && (state.value >= state.min) && (state.value + state.addition <= state.max)
-        && setState({...state, value: state.value + state.addition})
+        state.max % state.addition === 0 ? console.log("кратно") : console.log("не кратно");
 
-        state.value === state.max && setStateError({...stateError, valueError: true})
+
+        state.value + state.addition <= state.max && setState({...state, value: state.value + state.addition})
+
+
+        //setStateError({...stateError, valueError: true})
     }
 
     const decStateValue = () => {
@@ -73,6 +77,8 @@ function App() {
                      setState = {setState}
                      stateError = {stateError}
                      setStateError = {setStateError}
+                     isSettingMode = {isSettingMode}
+                     setIsSettingMode = {setIsSettingMode}
             />
 
             <Counter state = {state}
@@ -82,6 +88,7 @@ function App() {
                      incrementCallback = {incStateValue}
                      decrementCallback = {decStateValue}
                      resetCallback = {resetCallback}
+                     isSettingMode = {isSettingMode}
             />
         </div>
     );

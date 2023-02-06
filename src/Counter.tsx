@@ -14,11 +14,12 @@ export type CounterPropsType = {
     incrementCallback: () => void
     decrementCallback: () => void
     resetCallback: () => void
+    isSettingMode: boolean
 }
 
 function Counter(props: CounterPropsType) {
     const {
-        state, setState, stateError, setStateError,
+        state, setState, stateError, setStateError,isSettingMode,
         incrementCallback,
         decrementCallback,
         resetCallback
@@ -28,8 +29,8 @@ function Counter(props: CounterPropsType) {
         <Wrapper>
 
             <Display value = {state.value}
-                     isSettingChanged = {state.isSettingChanged}
-                     stateError={stateError}
+                     isSettingChanged = {isSettingMode}
+                     stateError = {stateError}
             />
 
 
@@ -37,7 +38,7 @@ function Counter(props: CounterPropsType) {
                 value = {state.value}
                 minValue = {state.min}
                 maxValue = {state.max}
-                isSettingChanged = {state.isSettingChanged}
+                isSettingChanged = {isSettingMode}
                 incrementCallback = {incrementCallback}
                 decrementCallback = {decrementCallback}
                 resetCallback = {resetCallback}
