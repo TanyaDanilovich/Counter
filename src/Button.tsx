@@ -33,6 +33,7 @@ const SimpleButton = styled.button`
   color: rgba(0, 0, 0, 0.7);
   cursor: pointer;
   border: 3px solid transparent;
+  display: inline;
 
   :hover {
     border: 3px solid #1e697e;

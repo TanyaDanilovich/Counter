@@ -14,15 +14,16 @@ export type CounterPropsType = {
     incrementCallback: () => void
     decrementCallback: () => void
     resetCallback: () => void
+    setCallback: () => void
     isSettingMode: boolean
 }
 
 function Counter(props: CounterPropsType) {
     const {
-        state, setState, stateError, setStateError,isSettingMode,
+        state, setState, stateError, setStateError, isSettingMode,
         incrementCallback,
         decrementCallback,
-        resetCallback
+        resetCallback, setCallback
     } = props
 
     return (
@@ -42,6 +43,7 @@ function Counter(props: CounterPropsType) {
                 incrementCallback = {incrementCallback}
                 decrementCallback = {decrementCallback}
                 resetCallback = {resetCallback}
+                setCallback = {setCallback}
             />
 
         </Wrapper>
@@ -57,4 +59,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 20px;
+  min-height: 410px;
+  min-width: 600px;
 `

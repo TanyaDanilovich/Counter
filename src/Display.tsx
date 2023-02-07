@@ -50,12 +50,11 @@ export default Display;
 const Wrapper = styled.div`
   font-size: 55px;
   font-weight: 700;
-  height: 100px;
-  width: 700px;
   border: 5px solid #61dafb;
   color: #61dafb;
-  border-radius: 15px;
+  border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-grow: 1;
 `

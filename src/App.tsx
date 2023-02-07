@@ -78,26 +78,29 @@ function App() {
         })
     }
 
+    const setCallback = () => setIsSettingMode(true)
+
 //console.log(state.max)
     return (
         <div className = "App">
-            <Setting state = {state}
-                     setState = {setState}
-                     stateError = {stateError}
-                     setStateError = {setStateError}
-                     isSettingMode = {isSettingMode}
-                     setIsSettingMode = {setIsSettingMode}
-            />
+            {isSettingMode && <Setting state = {state}
+                                       setState = {setState}
+                                       stateError = {stateError}
+                                       setStateError = {setStateError}
+                                       isSettingMode = {isSettingMode}
+                                       setIsSettingMode = {setIsSettingMode}
+            />}
 
-            <Counter state = {state}
-                     setState = {setState}
-                     stateError = {stateError}
-                     setStateError = {setStateError}
-                     incrementCallback = {incStateValue}
-                     decrementCallback = {decStateValue}
-                     resetCallback = {resetCallback}
-                     isSettingMode = {isSettingMode}
-            />
+            {!isSettingMode && <Counter state = {state}
+                                        setState = {setState}
+                                        stateError = {stateError}
+                                        setStateError = {setStateError}
+                                        incrementCallback = {incStateValue}
+                                        decrementCallback = {decStateValue}
+                                        resetCallback = {resetCallback}
+                                        setCallback = {setCallback}
+                                        isSettingMode = {isSettingMode}
+            />}
         </div>
     );
 }

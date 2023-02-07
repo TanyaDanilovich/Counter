@@ -161,6 +161,8 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 20px;
+  min-height: 410px;
+  min-width: 600px;
 `
 const Border = styled.div`
   padding: 20px;
@@ -169,4 +171,6 @@ const Border = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 15px;
+  justify-content: center;
+  align-items: center;
 `
