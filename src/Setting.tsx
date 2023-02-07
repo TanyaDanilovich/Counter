@@ -3,6 +3,7 @@ import Button from './Button';
 import {ErrorStateType, StateType} from './App';
 import SettingInput from './SettingInput';
 import styled from 'styled-components';
+import {log} from 'util';
 
 export type SettingPropsType = {
     state: StateType
@@ -20,7 +21,7 @@ const Setting = (props: SettingPropsType) => {
     const [localState, setLocalState] = useState<StateType>({...state})
 
     useEffect(() => {
-        console.log("state is changed")
+
         localStorage.setItem('counter_State', JSON.stringify({
             value: state.min,
             min: state.min,
@@ -29,25 +30,80 @@ const Setting = (props: SettingPropsType) => {
         }));
     }, [state])
 
+    useEffect(() => {
+
+
+    }, [localState])
+
+
+    const callbackHandler = (val: number, key: string) => {
+        setStateError({
+            valueError: false,
+            minError: false,
+            maxError: false,
+            additionError: false
+        })
+        setIsSettingMode(true)
+        setLocalState({...localState, [key]: val})
+    }
+
+    //check the possibility of increasing the additional
+    const checkAdditional = (min: number, max: number, add: number) => (min + add) > max ? true : false
+
+    //check the maximum is always greater than the minimum
+    const checkMaxValue = (min: number, max: number) => max <= min || min < 0 ? true : false
+
+    //check the minimum is always greater than the minimum
+    const checkMinValue = (min: number, max: number) => min >= max || max < 0 ? true : false
+
 
     const setMaxValueCallback = (val: number) => {
-        stateError.valueError && setStateError({...stateError, valueError: false})
-        setIsSettingMode(true)
-        setLocalState({...localState, max: val})
-    }
+        console.log("render max")
+        callbackHandler(val, "max")
+        const addError = checkAdditional(localState.min, val, localState.addition)
+        const maxError = checkMaxValue(localState.min, val)
+        const minError = checkMaxValue(localState.min, val)
 
+        addError && console.log("add error")
+        maxError && console.log("max error")
+        minError && console.log("min error")
+
+        val <= 0 || addError || maxError || minError
+            ? setStateError({...stateError, maxError: true, minError: true, additionError: addError})
+            : setStateError({...stateError, maxError: false, minError: false, additionError: addError})
+
+    }
 
     const setMinValueCallback = (val: number) => {
-        stateError.valueError && setStateError({...stateError, valueError: false})
-        setIsSettingMode(true)
-        setLocalState({...localState, min: val})
+        console.log("render min")
+        callbackHandler(val, "min")
+        const addError = checkAdditional(val, localState.max, localState.addition)
+        const maxError = checkMaxValue(val, localState.max)
+        const minError = checkMaxValue(val, localState.max)
+
+        addError && console.log("add error")
+        maxError && console.log("max error")
+        minError && console.log("min error")
+
+        val < 0 || addError || maxError || minError
+            ? setStateError({...stateError, minError: true, maxError: true, additionError: addError})
+            : setStateError({...stateError, minError: false, maxError: false, additionError: addError})
     }
 
-
     const setAdditionalValueCallback = (val: number) => {
-        stateError.valueError && setStateError({...stateError, valueError: false})
-        setIsSettingMode(true)
-        setLocalState({...localState, addition: val})
+        console.log("render add")
+        callbackHandler(val, "addition")
+        const addError = checkAdditional(localState.min, localState.max, val)
+        const maxError = checkMaxValue(localState.min, localState.max)
+        const minError = checkMaxValue(localState.min, localState.max)
+
+        addError && console.log("add error")
+        maxError && console.log("max error")
+        minError && console.log("min error")
+
+        val < 0 || addError || maxError || minError
+            ? setStateError({...stateError, additionError: true, minError: maxError, maxError: maxError})
+            : setStateError({...stateError, additionError: false, minError: maxError, maxError: maxError})
     }
 
 

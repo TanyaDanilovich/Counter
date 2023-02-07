@@ -29,7 +29,7 @@ function Counter(props: CounterPropsType) {
         <Wrapper>
 
             <Display value = {state.value}
-                     isSettingChanged = {isSettingMode}
+                     isSettingMode = {isSettingMode}
                      stateError = {stateError}
             />
 
@@ -38,7 +38,7 @@ function Counter(props: CounterPropsType) {
                 value = {state.value}
                 minValue = {state.min}
                 maxValue = {state.max}
-                isSettingChanged = {isSettingMode}
+                isSettingMode = {isSettingMode}
                 incrementCallback = {incrementCallback}
                 decrementCallback = {decrementCallback}
                 resetCallback = {resetCallback}

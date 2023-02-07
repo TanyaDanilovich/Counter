@@ -1,34 +1,43 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import s from "./App.module.css"
 import {ErrorStateType} from './App';
 
 export type DisplayPropsType = {
     value: number
-    isSettingChanged: boolean
+    isSettingMode: boolean
     stateError: ErrorStateType
 }
 
 function Display({
                      value,
-                     isSettingChanged,
+                     isSettingMode,
                      stateError
                  }: DisplayPropsType) {
 
+    useEffect(() => {
+
+    }, [isSettingMode])
 
     const displayValue = stateError.minError || stateError.maxError || stateError.additionError
         ? "incorrect data"
-        : isSettingChanged
+        : isSettingMode
             ? "enter value and press 'set'"
             : value
 
 
+    let classname = stateError.minError
+    || stateError.maxError
+    || stateError.additionError
+    || stateError.valueError ? s.red : ''
+
+    const finallyClassName = isSettingMode ? "" : classname
+
+    console.log(classname)
+
     return (
         <Wrapper>
-            <div className = {stateError.minError
-            || stateError.maxError
-            || stateError.additionError
-            || stateError.valueError ? s.red : ''}>
+            <div className = {finallyClassName}>
                 {displayValue}
             </div>
 

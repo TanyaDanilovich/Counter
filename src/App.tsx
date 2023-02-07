@@ -18,7 +18,7 @@ export type ErrorStateType = {
 }
 
 function App() {
-    console.log("rerender App")
+    // console.log("rerender App")
     const initState: StateType = {
         value: 0,
         addition: 1,
@@ -43,17 +43,25 @@ function App() {
         additionError: false
     })
 
+    useEffect(() => {
 
-    const incStateValue = () => {
+            //check value Error
+            let rest = (state.max - state.min) % state.addition
+            rest === 0
+                ? state.value === state.max
+                    ? setStateError({...stateError, valueError: true})
+                    : setStateError({...stateError, valueError: false})
+                : state.value + rest === state.max
+                    ? setStateError({...stateError, valueError: true})
+                    : setStateError({...stateError, valueError: false})
+        }, [state]
+    )
 
-        state.max % state.addition === 0 ? console.log("кратно") : console.log("не кратно");
+    const incStateValue = () => state.value + state.addition <= state.max && setState({
+        ...state,
+        value: state.value + state.addition
+    })
 
-
-        state.value + state.addition <= state.max && setState({...state, value: state.value + state.addition})
-
-
-        //setStateError({...stateError, valueError: true})
-    }
 
     const decStateValue = () => {
         (state.value <= state.max) && (state.value > state.min)
@@ -61,7 +69,7 @@ function App() {
     }
 
     const resetCallback = () => {
-        setState({...state, value: state.min, addition: 1})
+        setState({...state, value: state.min, addition: state.addition})
         setStateError({
             valueError: false,
             minError: false,
@@ -70,7 +78,7 @@ function App() {
         })
     }
 
-    //console.log(state.max)
+//console.log(state.max)
     return (
         <div className = "App">
             <Setting state = {state}

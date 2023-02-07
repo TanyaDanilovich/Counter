@@ -8,7 +8,7 @@ export type SwitchButtonsPropsType = {
     value: number
     minValue: number
     maxValue: number
-    isSettingChanged: boolean
+    isSettingMode: boolean
     incrementCallback: () => void
     decrementCallback: () => void
     resetCallback: () => void
@@ -21,20 +21,13 @@ function SwitchButtons({
                            incrementCallback,
                            decrementCallback,
                            resetCallback,
-                           isSettingChanged
+                           isSettingMode
                        }: SwitchButtonsPropsType) {
 
-    const incrementCallbackHandler = () => {
-    }
-    const decrementCallbackHandler = () => {
-    }
-    const resetCallbackHandler = () => {
 
-    }
-
-    const incDisabled = value >= maxValue || isSettingChanged
-    const decrementDisabled = value === minValue || isSettingChanged
-    const resetDisabled = isSettingChanged
+    const incDisabled = value >= maxValue || isSettingMode
+    const decrementDisabled = value === minValue || isSettingMode
+    const resetDisabled = isSettingMode
 
     return (
         <Wrapper>
