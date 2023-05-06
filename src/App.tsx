@@ -1,81 +1,50 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import Counter from './Counter';
 import Setting from './Setting';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppRootStateType, CountStateType, ErrorStateType} from './state/store';
+import {countDecrementAC, countIncrementAC, countResetAC} from './state/counterStateReducer';
 
-export type StateType = {
-    value: number
-    min: number
-    max: number
-    addition: number
-}
-
-export type ErrorStateType = {
-    valueError: boolean
-    minError: boolean
-    maxError: boolean
-    additionError: boolean
-}
 
 function App() {
     // console.log("rerender App")
-    const initState: StateType = {
-        value: 0,
-        addition: 1,
-        min: 0,
-        max: 5
-    }
+
     let newState = null
 
     const storageStateAsString = localStorage.getItem('counter_State')
     if (storageStateAsString !== null) {
         newState = JSON.parse(storageStateAsString)
     }
-
-    const [state, setState] = useState<StateType>(newState ? newState : initState)
-
     const [isSettingMode, setIsSettingMode] = useState<boolean>(false)
 
-    const [stateError, setStateError] = useState<ErrorStateType>({
-        valueError: false,
-        minError: false,
-        maxError: false,
-        additionError: false
-    })
 
-    useEffect(() => {
+    const count = useSelector<AppRootStateType, CountStateType>(state => state.count)
+    const error = useSelector<AppRootStateType, ErrorStateType>(state => state.error)
 
-            //check value Error
-            let rest = (state.max - state.min) % state.addition
-            rest === 0
-                ? state.value === state.max
-                    ? setStateError({...stateError, valueError: true})
-                    : setStateError({...stateError, valueError: false})
-                : state.value + rest === state.max
-                    ? setStateError({...stateError, valueError: true})
-                    : setStateError({...stateError, valueError: false})
-        }, [state]
-    )
+    const dispatch = useDispatch()
 
-    const incStateValue = () => state.value + state.addition <= state.max && setState({
-        ...state,
-        value: state.value + state.addition
-    })
+
+    const incStateValue = () =>
+        dispatch(countIncrementAC(
+            count.value,
+            count.max,
+            count.min,
+            count.addition
+        ))
 
 
     const decStateValue = () => {
-        (state.value <= state.max) && (state.value > state.min)
-        && setState({...state, value: state.value - state.addition})
+        dispatch(countDecrementAC(
+            count.value,
+            count.max,
+            count.min,
+            count.addition))
     }
 
     const resetCallback = () => {
-        setState({...state, value: state.min, addition: state.addition})
-        setStateError({
-            valueError: false,
-            minError: false,
-            maxError: false,
-            additionError: false
-        })
+        dispatch(countResetAC())
+        // dispatch(errorResetAC())
     }
 
     const setCallback = () => setIsSettingMode(true)
@@ -83,18 +52,18 @@ function App() {
 //console.log(state.max)
     return (
         <div className = "App">
-            {isSettingMode && <Setting state = {state}
-                                       setState = {setState}
-                                       stateError = {stateError}
-                                       setStateError = {setStateError}
+            {isSettingMode && <Setting state = {count}
+                // setState = {setState}
+                                       stateError = {error}
+                //  setStateError = {setStateError}
                                        isSettingMode = {isSettingMode}
                                        setIsSettingMode = {setIsSettingMode}
             />}
 
-            {!isSettingMode && <Counter state = {state}
-                                        setState = {setState}
-                                        stateError = {stateError}
-                                        setStateError = {setStateError}
+            {!isSettingMode && <Counter state = {count}
+                // setState = {setState}
+                                        stateError = {error}
+                // setStateError = {setStateError}
                                         incrementCallback = {incStateValue}
                                         decrementCallback = {decStateValue}
                                         resetCallback = {resetCallback}

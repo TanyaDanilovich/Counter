@@ -1,15 +1,17 @@
 import React, {useEffect, useState} from 'react'
 import Button from './Button';
-import {ErrorStateType, StateType} from './App';
 import SettingInput from './SettingInput';
 import styled from 'styled-components';
-import {log} from 'util';
+import {CountStateType, ErrorStateType} from './state/store';
+import {useDispatch} from 'react-redux';
+import {newSettingValuesAC} from './state/counterStateReducer';
+
 
 export type SettingPropsType = {
-    state: StateType
-    setState: (newState: StateType) => void
+    state: CountStateType
+    // setState: (newState: StateType) => void
     stateError: ErrorStateType
-    setStateError: (newState: ErrorStateType) => void
+    //  setStateError: (newState: ErrorStateType) => void
     isSettingMode: boolean
     setIsSettingMode: (newState: boolean) => void
 }
@@ -17,18 +19,19 @@ export type SettingPropsType = {
 
 const Setting = (props: SettingPropsType) => {
 
-    const {state, setState, stateError, setStateError, isSettingMode, setIsSettingMode} = props
-    const [localState, setLocalState] = useState<StateType>({...state})
+    const {state, stateError, isSettingMode, setIsSettingMode} = props
+    const [localState, setLocalState] = useState<CountStateType>({...state})
+    const dispatch = useDispatch()
 
-    useEffect(() => {
-
-        localStorage.setItem('counter_State', JSON.stringify({
-            value: state.min,
-            min: state.min,
-            max: state.max,
-            addition: state.addition,
-        }));
-    }, [state])
+    // useEffect(() => {
+    //
+    //     localStorage.setItem('counter_State', JSON.stringify({
+    //         value: state.min,
+    //         min: state.min,
+    //         max: state.max,
+    //         addition: state.addition,
+    //     }));
+    // }, [state])
 
     useEffect(() => {
 
@@ -37,24 +40,24 @@ const Setting = (props: SettingPropsType) => {
 
 
     const callbackHandler = (val: number, key: string) => {
-        setStateError({
-            valueError: false,
-            minError: false,
-            maxError: false,
-            additionError: false
-        })
+        // setStateError({
+        //     valueError: false,
+        //     minError: false,
+        //     maxError: false,
+        //     additionError: false
+        // })
         setIsSettingMode(true)
         setLocalState({...localState, [key]: val})
     }
 
     //check the possibility of increasing the additional
-    const checkAdditional = (min: number, max: number, add: number) => (min + add) > max ? true : false
+    const checkAdditional = (min: number, max: number, add: number) => (min + add) > max
 
     //check the maximum is always greater than the minimum
-    const checkMaxValue = (min: number, max: number) => max <= min || min < 0 ? true : false
+    const checkMaxValue = (min: number, max: number) => max <= min || min < 0
 
     //check the minimum is always greater than the minimum
-    const checkMinValue = (min: number, max: number) => min >= max || max < 0 ? true : false
+    const checkMinValue = (min: number, max: number) => min >= max || max < 0
 
 
     const setMaxValueCallback = (val: number) => {
@@ -68,9 +71,9 @@ const Setting = (props: SettingPropsType) => {
         maxError && console.log("max error")
         minError && console.log("min error")
 
-        val <= 0 || addError || maxError || minError
-            ? setStateError({...stateError, maxError: true, minError: true, additionError: addError})
-            : setStateError({...stateError, maxError: false, minError: false, additionError: addError})
+        // val <= 0 || addError || maxError || minError
+        //     ? setStateError({...stateError, maxError: true, minError: true, additionError: addError})
+        //     : setStateError({...stateError, maxError: false, minError: false, additionError: addError})
 
     }
 
@@ -85,9 +88,9 @@ const Setting = (props: SettingPropsType) => {
         maxError && console.log("max error")
         minError && console.log("min error")
 
-        val < 0 || addError || maxError || minError
-            ? setStateError({...stateError, minError: true, maxError: true, additionError: addError})
-            : setStateError({...stateError, minError: false, maxError: false, additionError: addError})
+        // val < 0 || addError || maxError || minError
+        //     ? setStateError({...stateError, minError: true, maxError: true, additionError: addError})
+        //     : setStateError({...stateError, minError: false, maxError: false, additionError: addError})
     }
 
     const setAdditionalValueCallback = (val: number) => {
@@ -101,19 +104,16 @@ const Setting = (props: SettingPropsType) => {
         maxError && console.log("max error")
         minError && console.log("min error")
 
-        val < 0 || addError || maxError || minError
-            ? setStateError({...stateError, additionError: true, minError: maxError, maxError: maxError})
-            : setStateError({...stateError, additionError: false, minError: maxError, maxError: maxError})
+        // val < 0 || addError || maxError || minError
+        //     ? setStateError({...stateError, additionError: true, minError: maxError, maxError: maxError})
+        //     : setStateError({...stateError, additionError: false, minError: maxError, maxError: maxError})
     }
 
 
     const setButtonCallback = () => {
-        setState({
-            value: localState.min,
-            min: localState.min,
-            max: localState.max,
-            addition: localState.addition,
-        })
+        dispatch(
+            newSettingValuesAC(localState.min, localState.min, localState.max, localState.addition)
+        )
         setIsSettingMode(false)
 
 
@@ -136,11 +136,14 @@ const Setting = (props: SettingPropsType) => {
 
                 <SettingInput title = {'min value'}
                               value = {localState.min}
+
                               callback = {setMinValueCallback}
                               settingError = {stateError.minError}/>
 
                 <SettingInput title = {'step'}
                               value = {localState.addition}
+                              minInputValue = {1}
+                              maxInputValue = {localState.max - localState.min}
                               callback = {setAdditionalValueCallback}
                               settingError = {stateError.additionError}
                 />

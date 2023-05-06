@@ -1,16 +1,15 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import Footer from './SwitchButtons';
-import Display from './Display';
-import Switching from './SwitchButtons';
 import SwitchButtons from './SwitchButtons';
-import {ErrorStateType, StateType} from './App';
+import Display from './Display';
+import {CountStateType, ErrorStateType} from './state/store';
+
 
 export type CounterPropsType = {
-    state: StateType
-    setState: (state: StateType) => void
+    state: CountStateType
+    //  setState: (state: StateType) => void
     stateError: ErrorStateType
-    setStateError: (stateError: ErrorStateType) => void
+    // setStateError: (stateError: ErrorStateType) => void
     incrementCallback: () => void
     decrementCallback: () => void
     resetCallback: () => void
@@ -20,7 +19,7 @@ export type CounterPropsType = {
 
 function Counter(props: CounterPropsType) {
     const {
-        state, setState, stateError, setStateError, isSettingMode,
+        state, stateError, isSettingMode,
         incrementCallback,
         decrementCallback,
         resetCallback, setCallback
@@ -39,6 +38,7 @@ function Counter(props: CounterPropsType) {
                 value = {state.value}
                 minValue = {state.min}
                 maxValue = {state.max}
+                addition={state.addition}
                 isSettingMode = {isSettingMode}
                 incrementCallback = {incrementCallback}
                 decrementCallback = {decrementCallback}

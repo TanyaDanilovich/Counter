@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import s from "./App.module.css"
-import {ErrorStateType} from './App';
+import {ErrorStateType} from './state/store';
+
 
 export type DisplayPropsType = {
     value: number
@@ -33,7 +34,7 @@ function Display({
 
     const finallyClassName = isSettingMode ? "" : classname
 
-    console.log(classname)
+    // console.log(stateError)
 
     return (
         <Wrapper>

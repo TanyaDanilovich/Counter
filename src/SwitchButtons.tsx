@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components'
-import PropTypes from 'prop-types';
 import Button from './Button';
-import {StateType} from './App';
+
 
 export type SwitchButtonsPropsType = {
     value: number
     minValue: number
     maxValue: number
+    addition: number
     isSettingMode: boolean
     incrementCallback: () => void
     decrementCallback: () => void
@@ -19,6 +19,7 @@ function SwitchButtons({
                            value,
                            minValue,
                            maxValue,
+                           addition,
                            incrementCallback,
                            decrementCallback,
                            resetCallback,
@@ -27,7 +28,7 @@ function SwitchButtons({
                        }: SwitchButtonsPropsType) {
 
 
-    const incDisabled = value >= maxValue || isSettingMode
+    const incDisabled = value >= maxValue || value + addition > maxValue || isSettingMode
     const decrementDisabled = value === minValue || isSettingMode
     const resetDisabled = isSettingMode
 

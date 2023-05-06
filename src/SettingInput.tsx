@@ -6,6 +6,8 @@ import s from './Setting.module.css'
 export type SettingInputPropsType = {
     title: string
     value: number
+    minInputValue?: number
+    maxInputValue?: number
     callback: (val: number) => void
     error?: boolean
     setError?: (error: boolean) => void
@@ -17,7 +19,7 @@ export type SettingInputPropsType = {
 }
 
 function SettingInput(props: SettingInputPropsType) {
-    const {title, value, callback,settingError} = props
+    const {title, value, minInputValue, maxInputValue, callback, settingError} = props
 
     const onchangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         callback(Number(e.currentTarget.value))
@@ -35,6 +37,8 @@ function SettingInput(props: SettingInputPropsType) {
 
             <input step = {1}
                    type = {'number'}
+                   min = {minInputValue}
+                   max = {maxInputValue}
                    value = {value}
                    onChange = {onchangeInputHandler}
                    className = {inputClassname}
