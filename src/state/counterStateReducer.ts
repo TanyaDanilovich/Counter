@@ -5,7 +5,6 @@ export type IncrementActionType = {
     value: number
     max: number
     min: number
-    addition: number
 }
 
 export type DecrementActionType = {
@@ -13,13 +12,11 @@ export type DecrementActionType = {
     value: number
     max: number
     min: number
-    addition: number
 }
 
 
 export type ResetActionType = {
     type: "RESET"
-    rest?: number
 }
 
 export type setNewValuesActionType = {
@@ -27,7 +24,6 @@ export type setNewValuesActionType = {
     value: number
     min: number
     max: number
-    addition: number
 }
 
 export type counterActionType =
@@ -38,7 +34,6 @@ export type counterActionType =
 
 const initCounterState: CountStateType = {
     value: 0,
-    addition: 1,
     min: 0,
     max: 5
 }
@@ -48,31 +43,27 @@ export function counterStateReducer(
     action: counterActionType) {
     switch (action.type) {
         case "INCREMENT":
-            let rest = (action.max - action.min) % action.addition
-
             return (
-                action.value + action.addition <= action.max ||
-                action.value + action.addition <= action.max
-                    ? {...state, value: action.value + action.addition}
+                state.value + 1 <= state.max
+                    ? {...state, value: state.value + 1}
                     : state)
 
 
         case "DECREMENT":
 
             return (action.value <= action.max) && (action.value > action.min)
-                ? {...state, value: action.value - action.addition}
+                ? {...state, value: action.value - 1}
                 : state
 
 
         case "RESET":
-            return {...state, value: state.min, addition: state.addition}
+            return {...state, value: state.min}
 
         case "NEW_SETTING_VALUES":
             return {
                 value: action.value,
                 min: action.min,
-                max: action.max,
-                addition: action.addition
+                max: action.max
             }
 
         default:
@@ -82,17 +73,15 @@ export function counterStateReducer(
 
 export const countIncrementAC = (value: number,
                                  max: number,
-                                 min: number,
-                                 addition: number) => {
-    return {type: "INCREMENT", value, max, min, addition} as const
+                                 min: number) => {
+    return {type: "INCREMENT", value, max, min} as const
 }
 
 
 export const countDecrementAC = (value: number,
                                  max: number,
-                                 min: number,
-                                 addition: number) => {
-    return {type: "DECREMENT", value, max, min, addition} as const
+                                 min: number) => {
+    return {type: "DECREMENT", value, max, min} as const
 }
 
 
@@ -104,7 +93,6 @@ export const countResetAC = () => {
 export const newSettingValuesAC = (
     value: number,
     min: number,
-    max: number,
-    addition: number): setNewValuesActionType => {
-    return {type: "NEW_SETTING_VALUES", value, min, max, addition}
+    max: number): setNewValuesActionType => {
+    return {type: "NEW_SETTING_VALUES", value, min, max}
 }

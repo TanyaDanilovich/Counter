@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect} from 'react';
+import React, {ChangeEvent} from 'react';
 import styled from 'styled-components';
 import s from './Setting.module.css'
 
@@ -6,8 +6,6 @@ import s from './Setting.module.css'
 export type SettingInputPropsType = {
     title: string
     value: number
-    minInputValue?: number
-    maxInputValue?: number
     callback: (val: number) => void
     error?: boolean
     setError?: (error: boolean) => void
@@ -19,17 +17,19 @@ export type SettingInputPropsType = {
 }
 
 function SettingInput(props: SettingInputPropsType) {
-    const {title, value, minInputValue, maxInputValue, callback, settingError} = props
+    const {title, value, callback, settingError} = props
 
     const onchangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         callback(Number(e.currentTarget.value))
     }
 
+   // console.log(settingError)
 
     const inputClassname = !settingError
         ? s.input
         : `${s.input} ${s.error}`
 
+   // console.log(inputClassname)
 
     return (
         <Settinglabel>
@@ -37,8 +37,6 @@ function SettingInput(props: SettingInputPropsType) {
 
             <input step = {1}
                    type = {'number'}
-                   min = {minInputValue}
-                   max = {maxInputValue}
                    value = {value}
                    onChange = {onchangeInputHandler}
                    className = {inputClassname}

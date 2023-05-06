@@ -7,14 +7,10 @@ export type CountStateType = {
     value: number
     min: number
     max: number
-    addition: number
 }
 
 export type ErrorStateType = {
-    valueError: boolean
-    minError: boolean
-    maxError: boolean
-    additionError: boolean
+    error: boolean
 }
 
 

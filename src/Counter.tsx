@@ -38,7 +38,6 @@ function Counter(props: CounterPropsType) {
                 value = {state.value}
                 minValue = {state.min}
                 maxValue = {state.max}
-                addition={state.addition}
                 isSettingMode = {isSettingMode}
                 incrementCallback = {incrementCallback}
                 decrementCallback = {decrementCallback}

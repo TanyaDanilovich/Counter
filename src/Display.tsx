@@ -20,17 +20,12 @@ function Display({
 
     }, [isSettingMode])
 
-    const displayValue = stateError.minError || stateError.maxError || stateError.additionError
-        ? "incorrect data"
-        : isSettingMode
-            ? "enter value and press 'set'"
-            : value
+    const displayValue = stateError.error
+        ? `max value = ${value}`
+        : value
 
 
-    let classname = stateError.minError
-    || stateError.maxError
-    || stateError.additionError
-    || stateError.valueError ? s.red : ''
+    let classname = stateError.error ? s.red : ''
 
     const finallyClassName = isSettingMode ? "" : classname
 

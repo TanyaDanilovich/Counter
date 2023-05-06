@@ -5,6 +5,7 @@ import Setting from './Setting';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType, CountStateType, ErrorStateType} from './state/store';
 import {countDecrementAC, countIncrementAC, countResetAC} from './state/counterStateReducer';
+import {setSettingDisplayModeAC} from './state/errorStateReducer';
 
 
 function App() {
@@ -29,8 +30,7 @@ function App() {
         dispatch(countIncrementAC(
             count.value,
             count.max,
-            count.min,
-            count.addition
+            count.min
         ))
 
 
@@ -38,32 +38,29 @@ function App() {
         dispatch(countDecrementAC(
             count.value,
             count.max,
-            count.min,
-            count.addition))
+            count.min))
     }
 
     const resetCallback = () => {
         dispatch(countResetAC())
-        // dispatch(errorResetAC())
     }
 
-    const setCallback = () => setIsSettingMode(true)
+    const setCallback = () => {
+        dispatch(setSettingDisplayModeAC())
+        setIsSettingMode(true)
+
+    }
 
 //console.log(state.max)
     return (
         <div className = "App">
             {isSettingMode && <Setting state = {count}
-                // setState = {setState}
                                        stateError = {error}
-                //  setStateError = {setStateError}
-                                       isSettingMode = {isSettingMode}
                                        setIsSettingMode = {setIsSettingMode}
             />}
 
             {!isSettingMode && <Counter state = {count}
-                // setState = {setState}
                                         stateError = {error}
-                // setStateError = {setStateError}
                                         incrementCallback = {incStateValue}
                                         decrementCallback = {decStateValue}
                                         resetCallback = {resetCallback}

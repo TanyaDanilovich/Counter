@@ -5,7 +5,7 @@ export type ButtonPropsType = {
     title: string
     color: string
     callback: () => void
-    disabled: boolean
+    disabled?: boolean
 }
 
 
@@ -22,7 +22,6 @@ function Button({title, color, callback, disabled}: ButtonPropsType) {
 }
 
 export default Button;
-
 const SimpleButton = styled.button`
   font-size: 40px;
   font-weight: 700;
