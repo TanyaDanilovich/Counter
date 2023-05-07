@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType, CountStateType, ErrorStateType} from './state/store';
 import {countDecrementAC, countIncrementAC, countResetAC} from './state/counterStateReducer';
 import {setSettingDisplayModeAC} from './state/errorStateReducer';
+import styled from 'styled-components';
 
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
     if (storageStateAsString !== null) {
         newState = JSON.parse(storageStateAsString)
     }
-    const [isSettingMode, setIsSettingMode] = useState<boolean>(false)
+    const [isSetNewSetting, setIsSetNewSetting] = useState<boolean>(false)
 
 
     const count = useSelector<AppRootStateType, CountStateType>(state => state.count)
@@ -47,28 +48,37 @@ function App() {
 
     const setCallback = () => {
         dispatch(setSettingDisplayModeAC())
-        setIsSettingMode(true)
+      //  setIsSettingMode(true)
 
     }
 
 //console.log(state.max)
     return (
-        <div className = "App">
-            {isSettingMode && <Setting state = {count}
-                                       stateError = {error}
-                                       setIsSettingMode = {setIsSettingMode}
-            />}
+        <AppWrapper>
+            <Setting state = {count}
+                     stateError = {error}
+                     isSetNewSetting = {isSetNewSetting}
+                     setIsSetNewSetting = {setIsSetNewSetting}
+                     setCallback={setCallback}
+                     resetCallback = {resetCallback}
+            />
 
-            {!isSettingMode && <Counter state = {count}
-                                        stateError = {error}
-                                        incrementCallback = {incStateValue}
-                                        decrementCallback = {decStateValue}
-                                        resetCallback = {resetCallback}
-                                        setCallback = {setCallback}
-                                        isSettingMode = {isSettingMode}
-            />}
-        </div>
+            <Counter state = {count}
+                     stateError = {error}
+                     incrementCallback = {incStateValue}
+                     decrementCallback = {decStateValue}
+                     resetCallback = {resetCallback}
+                     isSetNewSetting = {isSetNewSetting}
+            />
+        </AppWrapper>
     );
 }
 
 export default App;
+
+
+const AppWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 50px;
+`

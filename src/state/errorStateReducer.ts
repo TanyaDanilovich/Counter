@@ -2,7 +2,8 @@ import {ErrorStateType} from './store';
 import {counterActionType} from './counterStateReducer';
 
 const initCounterError: ErrorStateType = {
-    error: false
+    valueError: false,
+    settingError: false
 }
 
 export type SetSettingDisplayModeActionType = { type: "SET_SETTING_DISPLAY_MODE" }
@@ -29,38 +30,32 @@ export const errorStateReducer = (
     switch (action.type) {
         case "INCREMENT":
             return (action.value + 1 === action.max
-                ? {error: true}
-                : {error: false})
+                ? {...state, valueError: true}
+                : {...state, valueError: false})
 
         case "DECREMENT":
             return (action.value - 1 < action.max
-                ? {error: false}
-                : {error: true})
+                ? {...state, valueError: false}
+                : {...state, valueError: true})
 
         case "RESET":
-            return {
-                error: false
-            }
+            return initCounterError
 
         case "NEW_SETTING_VALUES":
-            return {
-                error: false
-            }
+            return initCounterError
 
         case "SET_SETTING_DISPLAY_MODE":
-            return {
-                error: false
-            }
+            return initCounterError
 
         case "CHECK_MIN":
             return action.min >= 0 && action.min < action.max
-                ? {error: false}
-                : {error: true}
+                ? {...state, settingError: false}
+                : {...state, settingError: true}
 
         case "CHECK_MAX":
             return action.max >= 0 && action.min < action.max
-                ? {error: false}
-                : {error: true}
+                ? {...state, settingError: false}
+                : {...state, settingError: true}
 
         default:
             return state

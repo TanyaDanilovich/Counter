@@ -7,30 +7,28 @@ import {CountStateType, ErrorStateType} from './state/store';
 
 export type CounterPropsType = {
     state: CountStateType
-    //  setState: (state: StateType) => void
     stateError: ErrorStateType
-    // setStateError: (stateError: ErrorStateType) => void
     incrementCallback: () => void
     decrementCallback: () => void
     resetCallback: () => void
-    setCallback: () => void
-    isSettingMode: boolean
+    isSetNewSetting: boolean
 }
 
 function Counter(props: CounterPropsType) {
     const {
-        state, stateError, isSettingMode,
+        state, stateError,
         incrementCallback,
         decrementCallback,
-        resetCallback, setCallback
+        resetCallback,
+        isSetNewSetting
     } = props
 
     return (
         <Wrapper>
 
             <Display value = {state.value}
-                     isSettingMode = {isSettingMode}
                      stateError = {stateError}
+                     isSetNewSetting={isSetNewSetting}
             />
 
 
@@ -38,11 +36,10 @@ function Counter(props: CounterPropsType) {
                 value = {state.value}
                 minValue = {state.min}
                 maxValue = {state.max}
-                isSettingMode = {isSettingMode}
                 incrementCallback = {incrementCallback}
                 decrementCallback = {decrementCallback}
                 resetCallback = {resetCallback}
-                setCallback = {setCallback}
+                isSetNewSetting={isSetNewSetting}
             />
 
         </Wrapper>
@@ -59,5 +56,5 @@ const Wrapper = styled.div`
   flex-direction: column;
   row-gap: 20px;
   min-height: 410px;
-  min-width: 600px;
+  //min-width: 600px;
 `

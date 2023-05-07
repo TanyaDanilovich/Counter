@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import s from "./App.module.css"
 import {ErrorStateType} from './state/store';
@@ -6,28 +6,28 @@ import {ErrorStateType} from './state/store';
 
 export type DisplayPropsType = {
     value: number
-    isSettingMode: boolean
+    isSetNewSetting: boolean
     stateError: ErrorStateType
 }
 
 function Display({
                      value,
-                     isSettingMode,
-                     stateError
+                     stateError,
+                     isSetNewSetting
                  }: DisplayPropsType) {
 
-    useEffect(() => {
 
-    }, [isSettingMode])
+    const displayValue =
+        isSetNewSetting
+            ? stateError.settingError
+                ? "incorrect value"
+                : "enter values and press set"
+            : value
 
-    const displayValue = stateError.error
-        ? `max value = ${value}`
-        : value
 
+    let classname = stateError.valueError || stateError.settingError ? s.red : ''
 
-    let classname = stateError.error ? s.red : ''
-
-    const finallyClassName = isSettingMode ? "" : classname
+    const finallyClassName = isSetNewSetting ? "" : classname
 
     // console.log(stateError)
 
@@ -53,4 +53,6 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-grow: 1;
+  max-width: 450px;
+  text-align: center;
 `

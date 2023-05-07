@@ -7,29 +7,28 @@ export type SettingInputPropsType = {
     title: string
     value: number
     callback: (val: number) => void
-    error?: boolean
+    error: boolean
     setError?: (error: boolean) => void
-    settingError?: boolean
-    setMaxValError?: (error: boolean) => void
-    minValError?: boolean
-    setMinValError?: (error: boolean) => void
+    isSetNewSetting: boolean
+    setIsSetNewSetting: (val: boolean) => void
 
 }
 
 function SettingInput(props: SettingInputPropsType) {
-    const {title, value, callback, settingError} = props
+    const {title, value, callback, isSetNewSetting, setIsSetNewSetting, error} = props
 
     const onchangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         callback(Number(e.currentTarget.value))
+        if (!isSetNewSetting) setIsSetNewSetting(true)
     }
 
-   // console.log(settingError)
+    // console.log(settingError)
 
-    const inputClassname = !settingError
+    const inputClassname = !error
         ? s.input
         : `${s.input} ${s.error}`
 
-   // console.log(inputClassname)
+    // console.log(inputClassname)
 
     return (
         <Settinglabel>

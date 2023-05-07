@@ -10,7 +10,8 @@ export type CountStateType = {
 }
 
 export type ErrorStateType = {
-    error: boolean
+    valueError: boolean
+    settingError: boolean
 }
 
 

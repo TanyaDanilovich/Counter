@@ -11,13 +11,16 @@ import {checkMaxAC, checkMinAC} from './state/errorStateReducer';
 export type SettingPropsType = {
     state: CountStateType
     stateError: ErrorStateType
-    setIsSettingMode: (newState: boolean) => void
+    setIsSetNewSetting: (newState: boolean) => void
+    isSetNewSetting: boolean
+    setCallback: () => void
+    resetCallback: () => void
 }
 
 
 const Setting = (props: SettingPropsType) => {
 
-    const {state, stateError, setIsSettingMode} = props
+    const {state, stateError, isSetNewSetting, setIsSetNewSetting, resetCallback} = props
     const [localState, setLocalState] = useState<CountStateType>({...state})
     const dispatch = useDispatch()
 
@@ -25,7 +28,7 @@ const Setting = (props: SettingPropsType) => {
         setLocalState({...localState, [key]: val})
     }
 
-    console.log(stateError.error)
+    console.log(stateError.settingError)
 
     const setMaxValueCallback = (val: number) => {
         callbackHandler(val, "max")
@@ -43,7 +46,7 @@ const Setting = (props: SettingPropsType) => {
         dispatch(
             newSettingValuesAC(localState.min, localState.min, localState.max)
         )
-        setIsSettingMode(false)
+        setIsSetNewSetting(false)
     }
 
 
@@ -54,18 +57,23 @@ const Setting = (props: SettingPropsType) => {
                 <SettingInput title = {'max value'}
                               value = {localState.max}
                               callback = {setMaxValueCallback}
-                              settingError = {stateError.error}
+                              error = {stateError.settingError}
+                              isSetNewSetting = {isSetNewSetting}
+                              setIsSetNewSetting = {setIsSetNewSetting}
                 />
 
                 <SettingInput title = {'min value'}
                               value = {localState.min}
                               callback = {setMinValueCallback}
-                              settingError = {stateError.error}
+                              error = {stateError.settingError}
+                              isSetNewSetting = {isSetNewSetting}
+                              setIsSetNewSetting = {setIsSetNewSetting}
                 />
 
             </Border>
             <Border>
-                <Button title = {'set'} color = "blue" callback = {setButtonCallback}/>
+                <Button title = {'set'} color = "blue" callback = {setButtonCallback}
+                        disabled = {!isSetNewSetting || stateError.settingError}/>
             </Border>
         </Wrapper>
     )
@@ -80,8 +88,8 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 20px;
-  min-height: 410px;
-  min-width: 600px;
+  justify-content: center;
+  //min-width: 600px;
 `
 const Border = styled.div`
   padding: 20px;
