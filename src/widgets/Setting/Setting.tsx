@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import Button from './Button';
-import {ErrorStateType, StateType} from './App';
-import SettingInput from './SettingInput';
+import AppButton from '../../shared';
+import SettingInput from '../../features/SettingInput/SettingInput';
 import styled from 'styled-components';
-import {log} from 'util';
+import {ErrorStateType, StateType} from '../../app';
+
+
 
 export type SettingPropsType = {
     state: StateType
@@ -30,10 +31,7 @@ const Setting = (props: SettingPropsType) => {
         }));
     }, [state])
 
-    useEffect(() => {
 
-
-    }, [localState])
 
 
     const callbackHandler = (val: number, key: string) => {
@@ -146,7 +144,7 @@ const Setting = (props: SettingPropsType) => {
                 />
             </Border>
             <Border>
-                <Button title = {'set'} color = "blue" callback = {setButtonCallback} disabled = {setButtonDisabled}/>
+                <AppButton title = {'set'} color = "blue" callback = {setButtonCallback} disabled = {setButtonDisabled}/>
             </Border>
         </Wrapper>
     )

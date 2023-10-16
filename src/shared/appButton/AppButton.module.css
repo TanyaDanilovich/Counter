@@ -1,0 +1,31 @@
+.appButton{
+    font-size:40px;
+    font-weight:700;
+    border-radius:7px;
+    margin:10px;
+    padding:5px 15px;
+    background-color:var(--color-dark-contrast);
+    color:var(--color-dark-background-text);
+    cursor:pointer;
+    border:3px solid transparent;
+    display:inline;
+}
+
+.appButton:hover{
+    border:3px solid #1e697e;
+}
+
+.appButton:active{
+    background-color:#02d0fd;
+    color:rgba(0, 0, 0, 0.4);
+}
+
+.appButton:disabled{
+    background-color:#dbe4e7;
+    color:rgba(0, 0, 0, 0.4);
+}
+
+.appButton:disabled:hover{
+    border:3px solid transparent;
+    cursor:not-allowed;
+}

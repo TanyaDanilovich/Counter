@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import Footer from './SwitchButtons';
-import Display from './Display';
-import Switching from './SwitchButtons';
-import SwitchButtons from './SwitchButtons';
-import {ErrorStateType, StateType} from './App';
+import SwitchButtons from '../../features/SwitchButton/SwitchButtons';
+import Display from '../../features/Display/Display';
+import {ErrorStateType, StateType} from '../../app';
+
+
 
 export type CounterPropsType = {
     state: StateType

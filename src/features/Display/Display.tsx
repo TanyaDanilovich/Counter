@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react';
 import styled from 'styled-components';
-import s from "./App.module.css"
-import {ErrorStateType} from './App';
+import "../../app/index.css"
+import {ErrorStateType} from '../../app';
+
 
 export type DisplayPropsType = {
     value: number
@@ -29,7 +30,7 @@ function Display({
     let classname = stateError.minError
     || stateError.maxError
     || stateError.additionError
-    || stateError.valueError ? s.red : ''
+    || stateError.valueError ? "var(---color-danger)" : ''
 
     const finallyClassName = isSettingMode ? "" : classname
 
@@ -37,7 +38,9 @@ function Display({
 
     return (
         <Wrapper>
-            <div className = {finallyClassName}>
+            <div style = {{color: `${finallyClassName}`}}
+                // className = {finallyClassName}
+            >
                 {displayValue}
             </div>
 

@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
+import './index.css';
 import './App.css';
-import Counter from './Counter';
-import Setting from './Setting';
+import {Setting, Counter} from '../widgets';
+
 
 export type StateType = {
     value: number
@@ -16,6 +17,7 @@ export type ErrorStateType = {
     maxError: boolean
     additionError: boolean
 }
+
 
 function App() {
     // console.log("rerender App")

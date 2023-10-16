@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect} from 'react';
 import styled from 'styled-components';
-import s from './Setting.module.css'
+import s from '../../widgets/Setting/Setting.module.css'
 
 
 export type SettingInputPropsType = {

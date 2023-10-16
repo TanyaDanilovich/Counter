@@ -1,5 +1,5 @@
 html {
-    background-color: #3b3b3b;
+    background-color: var(--color-secondary-contrast-foreground);
 }
 
 .App {
