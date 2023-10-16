@@ -10,6 +10,8 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "@types/react-redux": "^7.1.27",
+    "@types/redux": "^3.6.0",
     "@types/styled-components": "^5.1.26",
     "antd": "^5.10.0",
     "react": "^18.2.0",
