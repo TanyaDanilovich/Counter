@@ -1,46 +1,46 @@
 import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import "../../app/index.css"
-import {ErrorStateType} from '../../app';
+import {useAppSelector} from '../../redux/store';
+import {errorSelector, valueSelector} from '../../redux/selectors';
 
 
 export type DisplayPropsType = {
-    value: number
     isSettingMode: boolean
-    stateError: ErrorStateType
 }
 
-function Display({
-                     value,
-                     isSettingMode,
-                     stateError
-                 }: DisplayPropsType) {
+function Display({isSettingMode}: DisplayPropsType) {
 
+    const value = useAppSelector(valueSelector)
+    const error = useAppSelector(errorSelector)
     useEffect(() => {
 
     }, [isSettingMode])
 
-    const displayValue = stateError.minError || stateError.maxError || stateError.additionError
+    const displayValue = error.minError || error.maxError || error.additionError
         ? "incorrect data"
         : isSettingMode
             ? "enter value and press 'set'"
             : value
 
 
-    let classname = stateError.minError
-    || stateError.maxError
-    || stateError.additionError
-    || stateError.valueError ? "var(---color-danger)" : ''
+    let classname = error.minError
+    || error.maxError
+    || error.additionError
+    || error.valueError ?
+        // "var(---color-danger)"
+        'red'
+        : ''
 
     const finallyClassName = isSettingMode ? "" : classname
 
-    console.log(classname)
+
+    //console.log(classname)
 
     return (
         <Wrapper>
             <div style = {{color: `${finallyClassName}`}}
-                // className = {finallyClassName}
-            >
+                 className = {"finallyClassName"}>
                 {displayValue}
             </div>
 

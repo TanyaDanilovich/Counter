@@ -2,48 +2,23 @@ import React from 'react';
 import styled from 'styled-components';
 import SwitchButtons from '../../features/SwitchButton/SwitchButtons';
 import Display from '../../features/Display/Display';
-import {ErrorStateType, StateType} from '../../app';
-
 
 
 export type CounterPropsType = {
-    state: StateType
-    setState: (state: StateType) => void
-    stateError: ErrorStateType
-    setStateError: (stateError: ErrorStateType) => void
-    incrementCallback: () => void
-    decrementCallback: () => void
-    resetCallback: () => void
-    setCallback: () => void
+    setSettingMode: () => void
     isSettingMode: boolean
 }
 
-function Counter(props: CounterPropsType) {
-    const {
-        state, setState, stateError, setStateError, isSettingMode,
-        incrementCallback,
-        decrementCallback,
-        resetCallback, setCallback
-    } = props
+function Counter({setSettingMode, isSettingMode}: CounterPropsType) {
 
     return (
         <Wrapper>
 
-            <Display value = {state.value}
-                     isSettingMode = {isSettingMode}
-                     stateError = {stateError}
-            />
-
+            <Display isSettingMode = {isSettingMode}/>
 
             <SwitchButtons
-                value = {state.value}
-                minValue = {state.min}
-                maxValue = {state.max}
                 isSettingMode = {isSettingMode}
-                incrementCallback = {incrementCallback}
-                decrementCallback = {decrementCallback}
-                resetCallback = {resetCallback}
-                setCallback = {setCallback}
+                setCallback = {setSettingMode}
             />
 
         </Wrapper>

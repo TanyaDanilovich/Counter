@@ -5,5 +5,8 @@ export const counterSelector = (state: AppRootStateType):CounterType => state.co
 export const errorSelector = (state: AppRootStateType) => state.error
 
 
+export const valueSelector = (state: AppRootStateType):number => state.counter.value
+export const valueErrorSelector = (state: AppRootStateType):boolean => state.error.valueError
+
 
 
