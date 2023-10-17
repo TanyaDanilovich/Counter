@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import "../../app/index.css"
+import './Display.css'
 import {useAppSelector} from '../../redux/store';
 import {errorSelector, valueSelector} from '../../redux/selectors';
 
@@ -13,9 +14,7 @@ function Display({isSettingMode}: DisplayPropsType) {
 
     const value = useAppSelector(valueSelector)
     const error = useAppSelector(errorSelector)
-    useEffect(() => {
 
-    }, [isSettingMode])
 
     const displayValue = error.minError || error.maxError || error.additionError
         ? "incorrect data"
@@ -24,13 +23,13 @@ function Display({isSettingMode}: DisplayPropsType) {
             : value
 
 
-    let classname = error.minError
-    || error.maxError
-    || error.additionError
-    || error.valueError ?
-        // "var(---color-danger)"
-        'red'
-        : ''
+    let classname =
+        error.minError
+        || error.maxError
+        || error.additionError
+        || error.valueError
+            ? 'error'
+            : ''
 
     const finallyClassName = isSettingMode ? "" : classname
 
@@ -39,8 +38,7 @@ function Display({isSettingMode}: DisplayPropsType) {
 
     return (
         <Wrapper>
-            <div style = {{color: `${finallyClassName}`}}
-                 className = {"finallyClassName"}>
+            <div className = {finallyClassName}>
                 {displayValue}
             </div>
 
