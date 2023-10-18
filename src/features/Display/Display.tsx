@@ -14,7 +14,7 @@ function Display({isSettingMode}: DisplayPropsType) {
 
     const value = useAppSelector(valueSelector)
     const error = useAppSelector(errorSelector)
-
+    console.log(value)
 
     const displayValue = error.minError || error.maxError || error.additionError
         ? "incorrect data"

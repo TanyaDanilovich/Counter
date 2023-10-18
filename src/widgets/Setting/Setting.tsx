@@ -1,11 +1,13 @@
 import React, {useState} from 'react'
 import SettingInput from '../../features/SettingInput/SettingInput';
 import styled from 'styled-components';
+import styles from './Setting.module.css'
 import {useAppDispatch, useAppSelector} from '../../redux/store';
 import {counterSelector, errorSelector} from '../../redux/selectors';
-import {CounterType, setCounterDataAC} from '../../redux/counterReducer';
+import {CounterSettingType, CounterType, setCounterDataAC, setNewSettingDataAC} from '../../redux/counterReducer';
 import {removeErrorAC, removeValueErrorAC} from '../../redux/errorReducer';
 import AppButton from '../../shared';
+import {Controller, RegisterOptions, set, useForm} from 'react-hook-form';
 
 
 export type SettingPropsType = {
@@ -14,134 +16,134 @@ export type SettingPropsType = {
 
 
 const Setting = ({setCounterMode}: SettingPropsType) => {
-    const error = useAppSelector(errorSelector)
     const counter = useAppSelector(counterSelector)
 
-    console.log(counter)
+    // console.log(counter)
 
     const dispatch = useAppDispatch()
 
-    const [localCounter, setLocalState] = useState<CounterType>({...counter})
-
-
-    // useEffect(() => {
-    //
-    //     localStorage.setItem('counter_State', JSON.stringify({
-    //         value: state.min,
-    //         min: state.min,
-    //         max: state.max,
-    //         addition: state.addition,
-    //     }));
-    // }, [state])
-
-
-    const callbackHandler = (val: number, key: string) => {
-        dispatch(removeErrorAC())
-        setLocalState({...localCounter, [key]: val})
-    }
-
-    //check the possibility of increasing the additional
-    const checkAdditional = (min: number, max: number, add: number) => (min + add) > max ? true : false
-
-    //check the maximum is always greater than the minimum
-    const checkMaxValue = (min: number, max: number) => max <= min || min < 0 ? true : false
-
-    //check the minimum is always greater than the minimum
-    const checkMinValue = (min: number, max: number) => min >= max || max < 0 ? true : false
-
-
-    const setMaxValueCallback = (val: number) => {
-        console.log("render max")
-        callbackHandler(val, "max")
-        const addError = checkAdditional(localCounter.min, val, localCounter.addition)
-        const maxError = checkMaxValue(localCounter.min, val)
-        const minError = checkMaxValue(localCounter.min, val)
-
-        addError && console.log("add error")
-        maxError && console.log("max error")
-        minError && console.log("min error")
-
-        // val <= 0 || addError || maxError || minError
-        //     ? setStateError({...stateError, maxError: true, minError: true, additionError: addError})
-        //     : setStateError({...stateError, maxError: false, minError: false, additionError: addError})
-
-    }
-
-    const setMinValueCallback = (val: number) => {
-        console.log("render min")
-        callbackHandler(val, "min")
-        const addError = checkAdditional(val, localCounter.max, localCounter.addition)
-        const maxError = checkMaxValue(val, localCounter.max)
-        const minError = checkMaxValue(val, localCounter.max)
-
-        addError && console.log("add error")
-        maxError && console.log("max error")
-        minError && console.log("min error")
-
-        // val < 0 || addError || maxError || minError
-        //     ? setStateError({...stateError, minError: true, maxError: true, additionError: addError})
-        //     : setStateError({...stateError, minError: false, maxError: false, additionError: addError})
-    }
-
-    const setAdditionalValueCallback = (val: number) => {
-        console.log("render add")
-        callbackHandler(val, "addition")
-        const addError = checkAdditional(localCounter.min, localCounter.max, val)
-        const maxError = checkMaxValue(localCounter.min, localCounter.max)
-        const minError = checkMaxValue(localCounter.min, localCounter.max)
-
-        addError && console.log("add error")
-        maxError && console.log("max error")
-        minError && console.log("min error")
-
-        // val < 0 || addError || maxError || minError
-        //     ? setStateError({...stateError, additionError: true, minError: maxError, maxError: maxError})
-        //     : setStateError({...stateError, additionError: false, minError: maxError, maxError: maxError})
-    }
-
-
     const setButtonCallback = () => {
-        dispatch(setCounterDataAC(
-            localCounter.min,
-            localCounter.min,
-            localCounter.max,
-            localCounter.addition,
-        ))
+        dispatch(setNewSettingDataAC(minValue, maxValue, step))
         dispatch(removeValueErrorAC())
         setCounterMode()
     }
 
-    const setButtonDisabled = error.maxError
-        || error.minError
-        || error.additionError //|| !isSettingMode
+
+    const {
+        reset,
+        control,
+        watch,
+        setValue,
+        handleSubmit,
+        formState: {errors, isValid},
+    } = useForm<CounterSettingType>({
+        defaultValues: {
+            max: counter.max,
+            min: counter.min,
+            step: counter.step
+        },
+        mode: 'all',
+    });
+
+    const onSubmit = handleSubmit(data => {
+        dispatch(setCounterDataAC(data.min, data.min, data.max, data.step))
+        reset()
+        console.log(data)
+        dispatch(removeValueErrorAC())
+        setCounterMode()
+    });
+
+    const maxValue = watch('max')
+    const minValue = watch('min')
+    const step = watch('step')
+
+    console.log(errors)
+    const maxValuerValidationRules: RegisterOptions = {
+        min: {value: 0, message: "Positive number only!!!"},
+        validate: {
+            lessThanMin: (value) => value >= minValue || "Сannot be less or equal than MIN",
+            lessThanStep: (value) => value >= step || "Сannot be less or equal than STEP"
+        },
+    }
+
+    const minValuerValidationRules: RegisterOptions = {
+        min: {value: 0, message: "Positive number only!!!"},
+        validate: (value) => value < maxValue || "Сannot be greater or equal than MAX"
+    }
 
 
+    const stepValidationRules: RegisterOptions = {
+        min: {value: 1, message: "More than 1 only!!!"}
+    }
     return (
 
         <Wrapper>
-            <Border>
-                <SettingInput title = {'max value'}
-                              value = {localCounter.max}
-                              callback = {setMaxValueCallback}
-                              settingError = {error.maxError}
-                />
+            <form onSubmit = {onSubmit} name = {'counter'}>
+                <Border>
 
-                <SettingInput title = {'min value'}
-                              value = {localCounter.min}
-                              callback = {setMinValueCallback}
-                              settingError = {error.minError}/>
 
-                <SettingInput title = {'step'}
-                              value = {localCounter.addition}
-                              callback = {setAdditionalValueCallback}
-                              settingError = {error.additionError}
-                />
-            </Border>
-            <Border>
-                <AppButton title = {'set'} color = "blue" callback = {setButtonCallback}
-                           disabled = {setButtonDisabled}/>
-                <button onClick = {setCounterMode}>go back</button>
-            </Border>
+                    <Controller control = {control}
+                                rules = {maxValuerValidationRules}
+                                name = {"max"}
+                                render = {({field}) => {
+                                    return (
+                                        <SettingInput title = {'max value'}
+                                                      value = {maxValue}
+                                                      callback = {(e) => {
+                                                          delete errors.min
+                                                          field.onChange(e)
+                                                      }}
+                                                      step = {step}/>)
+                                }}/>
+
+                    <div style = {{height: "15px"}}>
+                        {errors && errors.max && <div className = {styles.error}>{errors.max.message}</div>}
+                    </div>
+
+                    <Controller control = {control}
+                                rules = {minValuerValidationRules}
+                                name = {"min"}
+                                render = {({field}) => {
+                                    return (
+                                        <SettingInput title = {'min value'}
+                                                      value = {minValue}
+                                                      callback = {(e) => {
+
+                                                          field.onChange(e)
+                                                      }}
+                                                      step = {step}/>)
+                                }}/>
+
+
+                    <div style = {{height: "15px"}}>
+                        {errors && errors.min && <div className = {styles.error}>{errors.min.message}</div>}
+                    </div>
+
+                    <Controller control = {control}
+                                rules = {stepValidationRules}
+                                name = {"step"}
+                                render = {({field}) => {
+                                    return (
+                                        <SettingInput title = {'step'}
+                                                      value = {step}
+                                                      callback = {(e) => {
+                                                          setValue("max", e + minValue)
+                                                          field.onChange(e)
+                                                      }}
+                                                      step = {1}/>)
+                                }}/>
+
+                    <div style = {{height: "15px"}}>
+                        {errors && errors.step && <div className = {styles.error}>{errors.step.message}</div>}
+                    </div>
+
+                </Border>
+                <Border>
+                    <AppButton title = {'set'} color = "blue" callback = {setButtonCallback}
+                               disabled = {!isValid} type = {'submit'}/>
+                    <input type = "submit" title = {'set'}/>
+                </Border>
+            </form>
         </Wrapper>
     )
 }

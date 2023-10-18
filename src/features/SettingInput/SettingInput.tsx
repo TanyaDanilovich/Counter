@@ -13,11 +13,11 @@ export type SettingInputPropsType = {
     setMaxValError?: (error: boolean) => void
     minValError?: boolean
     setMinValError?: (error: boolean) => void
-
+    step?: number
 }
 
 function SettingInput(props: SettingInputPropsType) {
-    const {title, value, callback,settingError} = props
+    const {title, value, callback, settingError, step} = props
 
     const onchangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         callback(Number(e.currentTarget.value))
@@ -33,7 +33,7 @@ function SettingInput(props: SettingInputPropsType) {
         <Settinglabel>
             {title}
 
-            <input step = {1}
+            <input step = {step}
                    type = {'number'}
                    value = {value}
                    onChange = {onchangeInputHandler}

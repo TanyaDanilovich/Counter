@@ -20,7 +20,7 @@ function App() {
     // useEffect(() => {
     //
     //         //check value Error
-    //         let rest = (state.max - state.min) % state.addition
+    //         let rest = (state.max - state.min) % state.step
     //         rest === 0
     //             ? state.value === state.max
     //                 ? setStateError({...stateError, valueError: true})

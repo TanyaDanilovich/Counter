@@ -1,8 +1,15 @@
-const initialState = {
+export type CounterSettingType = {
+    min: number,
+    max: number,
+    step: number
+}
+
+
+const initialState: CounterSettingType & { value: number } = {
     value: 0,
     min: 0,
     max: 5,
-    addition: 1
+    step: 1
 }
 
 export type CounterType = typeof initialState
@@ -13,20 +20,27 @@ export const counterReducer = (state: CounterType = initialState, action: Counte
         case "APP/SET-COUNTER-DATA": {
             return {
                 ...state,
-                value: action.value, min: action.min, max: action.max, addition: action.addition
+                value: action.value, min: action.min, max: action.max, step: action.step
+            }
+        }
+
+        case "APP/SET-NEW-SETTING-DATA": {
+            return {
+                ...state,
+                min: action.min, max: action.max, step: action.step
             }
         }
         case "APP/INCREMENT": {
             return {
                 ...state,
-                value: state.value + state.addition
+                value: state.value + state.step
             }
         }
 
         case "APP/DECREMENT": {
             return {
                 ...state,
-                value: state.value - state.addition
+                value: state.value - state.step
             }
         }
 
@@ -43,8 +57,12 @@ export const counterReducer = (state: CounterType = initialState, action: Counte
 export const setCounterDataAC = (value: number,
                                  min: number,
                                  max: number,
-                                 addition: number) =>
-    ({type: "APP/SET-COUNTER-DATA", value, min, max, addition} as const)
+                                 step: number) =>
+    ({type: "APP/SET-COUNTER-DATA", value, min, max, step} as const)
+export const setNewSettingDataAC = (min: number,
+                                    max: number,
+                                    step: number) =>
+    ({type: "APP/SET-NEW-SETTING-DATA", min, max, step} as const)
 export const incrementAC = () => ({type: "APP/INCREMENT"} as const)
 export const decrementAC = () => ({type: "APP/DECREMENT"} as const)
 export const resetAC = () => ({type: "APP/RESET"} as const)
@@ -52,12 +70,15 @@ export const resetAC = () => ({type: "APP/RESET"} as const)
 
 //types
 export type SetCounterDataActionType = ReturnType<typeof setCounterDataAC>
+export type SetNewSettingDataActionType = ReturnType<typeof setNewSettingDataAC>
 export type IncrementActionType = ReturnType<typeof incrementAC>
 export type DecrementActionType = ReturnType<typeof decrementAC>
 export type ResetActionType = ReturnType<typeof resetAC>
 
 
-export type CounterActionType = SetCounterDataActionType
+export type CounterActionType =
+    SetCounterDataActionType
+    | SetNewSettingDataActionType
     | IncrementActionType
     | DecrementActionType
     | ResetActionType

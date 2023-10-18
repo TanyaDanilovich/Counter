@@ -6,16 +6,17 @@ export type ButtonPropsType = {
     color: string
     callback: () => void
     disabled: boolean
+    type?: 'submit' | 'reset' | 'button' | undefined;
 }
 
 
-function AppButton({title, color, callback, disabled}: ButtonPropsType) {
+function AppButton({title, color, callback, disabled, type}: ButtonPropsType) {
     const onClickButtonHandler = () => {
         callback()
     }
 
     return (
-        <button className = {style.appButton}
+        <button className = {style.appButton} type = {type}
                 onClick = {onClickButtonHandler}
                 disabled = {disabled}>
             {title}

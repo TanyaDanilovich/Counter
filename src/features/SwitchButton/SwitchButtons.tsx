@@ -22,9 +22,9 @@ function SwitchButtons({
     const dispatch = useAppDispatch()
 
     const incStateValue = () => {
-        if (counter.value + counter.addition < counter.max) {
+        if (counter.value + counter.step < counter.max) {
             dispatch(incrementAC())
-        } else if (counter.value + counter.addition === counter.max) {
+        } else if (counter.value + counter.step === counter.max) {
             dispatch(incrementAC())
             dispatch(setValueErrorAC())
         }
