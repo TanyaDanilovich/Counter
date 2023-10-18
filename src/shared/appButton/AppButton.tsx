@@ -4,14 +4,14 @@ import style from './AppButton.module.css'
 export type ButtonPropsType = {
     title: string
     color: string
-    callback: () => void
+    callback?: () => void
     disabled: boolean
 }
 
 
 function AppButton({title, color, callback, disabled}: ButtonPropsType) {
     const onClickButtonHandler = () => {
-        callback()
+        if (callback) callback()
     }
 
     return (

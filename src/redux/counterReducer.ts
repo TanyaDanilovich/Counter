@@ -1,4 +1,9 @@
-const initialState = {
+export interface CounterSettingType {
+    min: number,
+    max: number,
+    addition: number
+}
+const initialState: CounterSettingType & {value: number} = {
     value: 0,
     min: 0,
     max: 5,

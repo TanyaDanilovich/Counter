@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect} from 'react';
+import React, {ChangeEvent} from 'react';
 import styled from 'styled-components';
 import s from '../../widgets/Setting/Setting.module.css'
 
@@ -13,13 +13,15 @@ export type SettingInputPropsType = {
     setMaxValError?: (error: boolean) => void
     minValError?: boolean
     setMinValError?: (error: boolean) => void
-
 }
 
+
+
 function SettingInput(props: SettingInputPropsType) {
-    const {title, value, callback,settingError} = props
+    const {title, value, callback, settingError} = props
 
     const onchangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
+
         callback(Number(e.currentTarget.value))
     }
 
