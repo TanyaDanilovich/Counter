@@ -26,6 +26,9 @@ export const errorReducer = (state: ErrorType = initialState, action: ErrorActio
         case "APP/SET-ADDITION-ERROR": {
             return {...state, additionError: true}
         }
+        case "APP/REMOVE-ERROR": {
+            return {...state, valueError: false}
+        }
         default:
             return state
     }
@@ -37,6 +40,7 @@ export const removeValueErrorAC = () => ({type: "APP/REMOVE-VALUE-ERROR"} as con
 export const setMinErrorAC = () => ({type: "APP/SET-MIN-ERROR"} as const)
 export const setMaxErrorAC = () => ({type: "APP/SET-MAX-ERROR"} as const)
 export const setAdditionErrorAC = () => ({type: "APP/SET-ADDITION-ERROR"} as const)
+export const removeErrorAC = () => ({type: "APP/REMOVE-ERROR"} as const)
 
 
 //types
@@ -45,6 +49,7 @@ export type RemoveValueErrorActionType = ReturnType<typeof removeValueErrorAC>
 export type SetMinErrorActionType = ReturnType<typeof setMinErrorAC>
 export type SetMaxErrorActionType = ReturnType<typeof setMaxErrorAC>
 export type SetAdditionErrorActionType = ReturnType<typeof setAdditionErrorAC>
+export type RemoveErrorActionType = ReturnType<typeof removeErrorAC>
 
 
 export type ErrorActionType =
@@ -53,4 +58,5 @@ export type ErrorActionType =
     | SetMinErrorActionType
     | SetMaxErrorActionType
     | SetAdditionErrorActionType
+    | RemoveErrorActionType
 

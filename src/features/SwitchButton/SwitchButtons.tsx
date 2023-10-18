@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Button from '../../shared';
 import {useAppDispatch, useAppSelector} from '../../redux/store';
 import {counterSelector, valueErrorSelector} from '../../redux/selectors';
-import {DecrementAC, IncrementAC, ResetAC} from '../../redux/counterReducer';
+import {decrementAC, incrementAC, resetAC} from '../../redux/counterReducer';
 import {removeValueErrorAC, setValueErrorAC} from '../../redux/errorReducer';
 
 export type SwitchButtonsPropsType = {
@@ -23,22 +23,22 @@ function SwitchButtons({
 
     const incStateValue = () => {
         if (counter.value + counter.addition < counter.max) {
-            dispatch(IncrementAC())
+            dispatch(incrementAC())
         } else if (counter.value + counter.addition === counter.max) {
-            dispatch(IncrementAC())
+            dispatch(incrementAC())
             dispatch(setValueErrorAC())
         }
     }
 
     const decStateValue = () => {
         if (counter.value <= counter.max && counter.value > counter.min) {
-            dispatch(DecrementAC())
+            dispatch(decrementAC())
             if (counter.value === counter.max) dispatch(removeValueErrorAC())
         }
     }
 
     const handleReset = () => {
-        dispatch(ResetAC())
+        dispatch(resetAC())
         if (isValueError) dispatch(removeValueErrorAC())
     }
 

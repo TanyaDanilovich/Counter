@@ -10,6 +10,12 @@ export type CounterType = typeof initialState
 
 export const counterReducer = (state: CounterType = initialState, action: CounterActionType): CounterType => {
     switch (action.type) {
+        case "APP/SET-COUNTER-DATA": {
+            return {
+                ...state,
+                value: action.value, min: action.min, max: action.max, addition: action.addition
+            }
+        }
         case "APP/INCREMENT": {
             return {
                 ...state,
@@ -34,18 +40,24 @@ export const counterReducer = (state: CounterType = initialState, action: Counte
 
 
 //ActionCreators
-export const IncrementAC = () => ({type: "APP/INCREMENT"} as const)
-export const DecrementAC = () => ({type: "APP/DECREMENT"} as const)
-export const ResetAC = () => ({type: "APP/RESET"} as const)
+export const setCounterDataAC = (value: number,
+                                 min: number,
+                                 max: number,
+                                 addition: number) =>
+    ({type: "APP/SET-COUNTER-DATA", value, min, max, addition} as const)
+export const incrementAC = () => ({type: "APP/INCREMENT"} as const)
+export const decrementAC = () => ({type: "APP/DECREMENT"} as const)
+export const resetAC = () => ({type: "APP/RESET"} as const)
 
 
 //types
-export type IncrementActionType = ReturnType<typeof IncrementAC>
-export type DecrementActionType = ReturnType<typeof DecrementAC>
-export type ResetActionType = ReturnType<typeof ResetAC>
+export type SetCounterDataActionType = ReturnType<typeof setCounterDataAC>
+export type IncrementActionType = ReturnType<typeof incrementAC>
+export type DecrementActionType = ReturnType<typeof decrementAC>
+export type ResetActionType = ReturnType<typeof resetAC>
 
 
-export type CounterActionType =
+export type CounterActionType = SetCounterDataActionType
     | IncrementActionType
     | DecrementActionType
     | ResetActionType

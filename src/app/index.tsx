@@ -38,8 +38,8 @@ function App() {
 //console.log(state.max)
     return (
         <div className = "App">
-            {/*{isSettingMode &&*/}
-            {/*    <Setting setCounterMode = {setCounterMode}/>}*/}
+            {isSettingMode &&
+                <Setting setCounterMode = {setCounterMode}/>}
 
             {!isSettingMode &&
                 <Counter setSettingMode = {setSettingMode} isSettingMode={isSettingMode}/>}

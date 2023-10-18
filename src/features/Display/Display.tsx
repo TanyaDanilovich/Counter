@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import "../../app/index.css"
 import './Display.css'
@@ -33,8 +33,6 @@ function Display({isSettingMode}: DisplayPropsType) {
 
     const finallyClassName = isSettingMode ? "" : classname
 
-
-    //console.log(classname)
 
     return (
         <Wrapper>
