@@ -1,13 +1,12 @@
-import React, {useState} from 'react'
+import React from 'react'
 import SettingInput from '../../features/SettingInput/SettingInput';
 import styled from 'styled-components';
 import styles from './Setting.module.css'
 import {useAppDispatch, useAppSelector} from '../../redux/store';
-import {counterSelector, errorSelector} from '../../redux/selectors';
-import {CounterSettingType, CounterType, setCounterDataAC, setNewSettingDataAC} from '../../redux/counterReducer';
-import {removeErrorAC, removeValueErrorAC} from '../../redux/errorReducer';
-import AppButton from '../../shared';
-import {Controller, RegisterOptions, set, useForm} from 'react-hook-form';
+import {counterSelector} from '../../redux/selectors';
+import {CounterSettingType, setCounterDataAC, setNewSettingDataAC} from '../../redux/counterReducer';
+import {removeValueErrorAC} from '../../redux/errorReducer';
+import {Controller, RegisterOptions, useForm} from 'react-hook-form';
 
 
 export type SettingPropsType = {
@@ -57,7 +56,9 @@ const Setting = ({setCounterMode}: SettingPropsType) => {
     const minValue = watch('min')
     const step = watch('step')
 
-    console.log(errors)
+    //console.log(errors)
+
+    //validation
     const maxValuerValidationRules: RegisterOptions = {
         min: {value: 0, message: "Positive number only!!!"},
         validate: {
@@ -71,28 +72,32 @@ const Setting = ({setCounterMode}: SettingPropsType) => {
         validate: (value) => value < maxValue || "Сannot be greater or equal than MAX"
     }
 
-
     const stepValidationRules: RegisterOptions = {
         min: {value: 1, message: "More than 1 only!!!"}
     }
+
+
     return (
 
         <Wrapper>
-            <form onSubmit = {onSubmit} name = {'counter'}>
+            <form onSubmit = {onSubmit} name = {'counter'} id = {'counter-form'}
+                  style = {{display: "flex", flexDirection: 'column', flexGrow: '1', justifyContent: 'space-between'}}>
                 <Border>
 
 
                     <Controller control = {control}
                                 rules = {maxValuerValidationRules}
                                 name = {"max"}
-                                render = {({field}) => {
+                                render = {({field: {onChange}}) => {
+                                    const onChangeMaxValueHandler = (e: number) => {
+                                        delete errors.min
+                                        onChange(e)
+                                    }
+
                                     return (
                                         <SettingInput title = {'max value'}
                                                       value = {maxValue}
-                                                      callback = {(e) => {
-                                                          delete errors.min
-                                                          field.onChange(e)
-                                                      }}
+                                                      callback = {onChangeMaxValueHandler}
                                                       step = {step}/>)
                                 }}/>
 
@@ -103,14 +108,11 @@ const Setting = ({setCounterMode}: SettingPropsType) => {
                     <Controller control = {control}
                                 rules = {minValuerValidationRules}
                                 name = {"min"}
-                                render = {({field}) => {
+                                render = {({field: {onChange}}) => {
                                     return (
                                         <SettingInput title = {'min value'}
                                                       value = {minValue}
-                                                      callback = {(e) => {
-
-                                                          field.onChange(e)
-                                                      }}
+                                                      callback = {onChange}
                                                       step = {step}/>)
                                 }}/>
 
@@ -122,14 +124,16 @@ const Setting = ({setCounterMode}: SettingPropsType) => {
                     <Controller control = {control}
                                 rules = {stepValidationRules}
                                 name = {"step"}
-                                render = {({field}) => {
+                                render = {({field: {onChange}}) => {
+
+                                    const onChangeStepHandler = (e: number) => {
+                                        setValue("max", e + minValue)
+                                        onChange(e)
+                                    }
                                     return (
                                         <SettingInput title = {'step'}
                                                       value = {step}
-                                                      callback = {(e) => {
-                                                          setValue("max", e + minValue)
-                                                          field.onChange(e)
-                                                      }}
+                                                      callback = {onChangeStepHandler}
                                                       step = {1}/>)
                                 }}/>
 
@@ -139,9 +143,7 @@ const Setting = ({setCounterMode}: SettingPropsType) => {
 
                 </Border>
                 <Border>
-                    <AppButton title = {'set'} color = "blue" callback = {setButtonCallback}
-                               disabled = {!isValid} type = {'submit'}/>
-                    <input type = "submit" title = {'set'}/>
+                    <input type = "submit" value = {'set'} form = {'counter-form'}/>
                 </Border>
             </form>
         </Wrapper>
@@ -159,6 +161,7 @@ const Wrapper = styled.div`
   row-gap: 20px;
   min-height: 410px;
   min-width: 600px;
+  justify-content: space-between;
 `
 const Border = styled.div`
   padding: 20px;
@@ -166,7 +169,7 @@ const Border = styled.div`
   border-radius: 20px;
   display: flex;
   flex-direction: column;
-  row-gap: 15px;
+  //row-gap: 15px;
   justify-content: center;
   align-items: center;
 `

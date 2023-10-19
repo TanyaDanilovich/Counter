@@ -1,5 +1,5 @@
 .input{
-    padding:5px 20px;
+    padding:1px 20px;
     margin-left:20px;
     font-size:40px;
     font-weight:700;
@@ -19,4 +19,36 @@
 
 .input:focus{
     outline:none;
+}
+
+input[type='submit']{
+    font-size:40px;
+    font-weight:700;
+    border-radius:7px;
+    margin:10px;
+    padding:5px 15px;
+    background-color:var(--color-dark-contrast);
+    color:var(--color-dark-background-text);
+    cursor:pointer;
+    border:3px solid transparent;
+    display:inline;
+}
+
+input[type='submit']:hover{
+    border:3px solid #1e697e;
+}
+
+input[type='submit']:active{
+    background-color:#02d0fd;
+    color:rgba(0, 0, 0, 0.4);
+}
+
+input[type='submit']:disabled{
+    background-color:#dbe4e7;
+    color:rgba(0, 0, 0, 0.4);
+}
+
+input[type='submit']:disabled:hover{
+    border:3px solid transparent;
+    cursor:not-allowed;
 }
