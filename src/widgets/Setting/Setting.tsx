@@ -63,7 +63,8 @@ const Setting = ({setCounterMode}: SettingPropsType) => {
         min: {value: 0, message: "Positive number only!!!"},
         validate: {
             lessThanMin: (value) => value >= minValue || "Сannot be less or equal than MIN",
-            lessThanStep: (value) => value >= step || "Сannot be less or equal than STEP"
+            lessThanStep: (value) => value >= step || "Сannot be less or equal than STEP",
+            divided: (value) => (value - minValue) % step === 0 || `a number that can be divided by ${step} without a remainder.`
         },
     }
 
@@ -143,7 +144,7 @@ const Setting = ({setCounterMode}: SettingPropsType) => {
 
                 </Border>
                 <Border>
-                    <input type = "submit" value = {'set'} form = {'counter-form'}/>
+                    <button type = "submit" form = {'counter-form'} disabled = {!isValid}>set</button>
                 </Border>
             </form>
         </Wrapper>

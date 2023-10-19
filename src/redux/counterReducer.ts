@@ -45,7 +45,10 @@ export const counterReducer = (state: CounterType = initialState, action: Counte
         }
 
         case "APP/RESET": {
-            return initialState
+            return {
+                ...state,
+                value: action.min
+            }
         }
         default:
             return state
@@ -65,7 +68,7 @@ export const setNewSettingDataAC = (min: number,
     ({type: "APP/SET-NEW-SETTING-DATA", min, max, step} as const)
 export const incrementAC = () => ({type: "APP/INCREMENT"} as const)
 export const decrementAC = () => ({type: "APP/DECREMENT"} as const)
-export const resetAC = () => ({type: "APP/RESET"} as const)
+export const resetAC = (min: number) => ({type: "APP/RESET", min} as const)
 
 
 //types

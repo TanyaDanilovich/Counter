@@ -21,7 +21,7 @@
     outline:none;
 }
 
-input[type='submit']{
+button[type='submit']{
     font-size:40px;
     font-weight:700;
     border-radius:7px;
@@ -34,21 +34,21 @@ input[type='submit']{
     display:inline;
 }
 
-input[type='submit']:hover{
+button[type='submit']:hover{
     border:3px solid #1e697e;
 }
 
-input[type='submit']:active{
+button[type='submit']:active{
     background-color:#02d0fd;
     color:rgba(0, 0, 0, 0.4);
 }
 
-input[type='submit']:disabled{
+button[type='submit']:disabled{
     background-color:#dbe4e7;
     color:rgba(0, 0, 0, 0.4);
 }
 
-input[type='submit']:disabled:hover{
+button[type='submit']:disabled:hover{
     border:3px solid transparent;
     cursor:not-allowed;
 }

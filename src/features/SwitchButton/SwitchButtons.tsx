@@ -38,7 +38,7 @@ function SwitchButtons({
     }
 
     const handleReset = () => {
-        dispatch(resetAC())
+        dispatch(resetAC(counter.min))
         if (isValueError) dispatch(removeValueErrorAC())
     }
 

@@ -2,4 +2,5 @@
 .error{
     color:var(--color-danger);
     font-size:70px;
+    transition:font-size 1s;
 }

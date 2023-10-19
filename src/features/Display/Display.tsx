@@ -48,6 +48,7 @@ export default Display;
 
 const Wrapper = styled.div`
   font-size: 55px;
+  transition: font-size 1s;
   font-weight: 700;
   border: 5px solid #61dafb;
   color: #61dafb;
